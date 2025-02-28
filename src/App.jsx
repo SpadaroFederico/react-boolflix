@@ -3,16 +3,26 @@ import axios from "axios";
 import SearchBar from "./components/SearchBar";
 import MovieList from "./components/MovieList";
 
-function App() {
-  const [movies, setMovies] = useState([]);
-  const API_KEY = "3d2f7b4506c7c6af335517dd5f8c25b0";
+const API_KEY = "INSERISCI_LA_TUA_API_KEY";
 
-  const searchMovies = async (query) => {
+function App() {
+  const [results, setResults] = useState([]);
+
+  const searchMedia = async (query) => {
     if (!query) return;
-    const url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}&language=it-IT`;
+
     try {
-      const response = await axios.get(url);
-      setMovies(response.data.results);
+      const movieResponse = await axios.get(
+        `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}&language=it-IT`
+      );
+
+      const tvResponse = await axios.get(
+        `https://api.themoviedb.org/3/search/tv?api_key=${API_KEY}&query=${query}&language=it-IT`
+      );
+
+      // Unire i risultati di film e serie
+      const combinedResults = [...movieResponse.data.results, ...tvResponse.data.results];
+      setResults(combinedResults);
     } catch (error) {
       console.error("Errore nella chiamata API", error);
     }
@@ -21,8 +31,8 @@ function App() {
   return (
     <div>
       <h1>BoolFlix</h1>
-      <SearchBar onSearch={searchMovies} />
-      <MovieList movies={movies} />
+      <SearchBar onSearch={searchMedia} />
+      <MovieList movies={results} />
     </div>
   );
 }
