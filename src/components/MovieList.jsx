@@ -1,5 +1,3 @@
-// MovieList.jsx
-
 import Card from "./Card";
 
 function MovieList({ movies, languageCodes, imageBaseUrl }) {
