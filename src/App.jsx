@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import SearchBar from "./components/SearchBar";
 import MovieList from "./components/MovieList";
@@ -17,6 +17,23 @@ const LANGUAGE_CODES = {
 
 function App() {
   const [results, setResults] = useState([]);
+  const [imageBaseUrl, setImageBaseUrl] = useState(""); 
+
+  useEffect(() => {
+    const fetchImageBaseUrl = async () => {
+      try {
+        const response = await axios.get(
+          `https://api.themoviedb.org/3/configuration?api_key=${API_KEY}`
+        );
+        const baseUrl = response.data.images.base_url; 
+        setImageBaseUrl(baseUrl); 
+      } catch (error) {
+        console.error("Errore nel recupero dell'URL base delle immagini", error);
+      }
+    };
+
+    fetchImageBaseUrl();
+  }, []);
 
   const searchMedia = async (query) => {
     if (!query) return;
@@ -42,11 +59,9 @@ function App() {
     <div>
       <h1>BoolFlix</h1>
       <SearchBar onSearch={searchMedia} />
-      <MovieList movies={results} languageCodes={LANGUAGE_CODES} imageBaseUrl={IMAGE_BASE_URL}/>
+      <MovieList movies={results} languageCodes={LANGUAGE_CODES} imageBaseUrl={imageBaseUrl} />
     </div>
   );
 }
 
 export default App;
-
-
