@@ -1,10 +1,12 @@
-import MovieCard from "./MovieCard";
+// MovieList.jsx
 
-function MovieList({ movies, imageBaseUrl }) {
+import Card from "./Card";
+
+function MovieList({ movies, languageCodes, imageBaseUrl }) {
   return (
     <div className="movie-list">
-      {movies.map((movie) => (
-        <MovieCard key={movie.id} movie={movie} imageBaseUrl={imageBaseUrl} />
+      {movies.map((media) => (
+        <Card key={media.id} media={media} imageBaseUrl={imageBaseUrl} languageCodes={languageCodes} />
       ))}
     </div>
   );
