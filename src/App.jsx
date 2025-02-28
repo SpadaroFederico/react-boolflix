@@ -5,6 +5,16 @@ import MovieList from "./components/MovieList";
 
 const API_KEY = "3d2f7b4506c7c6af335517dd5f8c25b0";
 
+const LANGUAGE_CODES = {
+  en: "gb",
+  it: "it",
+  fr: "fr",
+  es: "es",
+  de: "de",
+  ja: "jp",
+  ko: "kr"
+};
+
 function App() {
   const [results, setResults] = useState([]);
 
@@ -32,9 +42,11 @@ function App() {
     <div>
       <h1>BoolFlix</h1>
       <SearchBar onSearch={searchMedia} />
-      <MovieList movies={results} />
+      <MovieList movies={results} languageCodes={LANGUAGE_CODES} />
     </div>
   );
 }
 
 export default App;
+
+
