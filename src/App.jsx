@@ -1,35 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.jsx
+import { useState } from "react";
+import axios from "axios";
+import SearchBar from "./components/SearchBar";
+import MovieList from "./components/MovieList";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [movies, setMovies] = useState([]);
+  const API_KEY = "3d2f7b4506c7c6af335517dd5f8c25b0";
+
+  const searchMovies = async (query) => {
+    if (!query) return;
+    const url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}&language=it-IT`;
+    try {
+      const response = await axios.get(url);
+      setMovies(response.data.results);
+    } catch (error) {
+      console.error("Errore nella chiamata API", error);
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div>
+      <h1>BoolFlix</h1>
+      <SearchBar onSearch={searchMovies} />
+      <MovieList movies={movies} />
+    </div>
+  );
 }
 
-export default App
+export default App;
