@@ -3,7 +3,7 @@ import axios from "axios";
 import SearchBar from "./components/SearchBar";
 import MovieList from "./components/MovieList";
 
-const API_KEY = "INSERISCI_LA_TUA_API_KEY";
+const API_KEY = "3d2f7b4506c7c6af335517dd5f8c25b0";
 
 function App() {
   const [results, setResults] = useState([]);
