@@ -8,7 +8,15 @@ function Card({ media, imageBaseUrl, languageCodes }) {
   const rating = Math.ceil(media.vote_average / 2);
   
   return (
-    
+    <div className="card">
+      <img className="card-img" src={imageUrl} alt={title} />
+      <div className="card-info">
+        <h3>{title} ({originalTitle})</h3>
+        <p>Lingua: <img src={flagUrl} alt={media.original_language} /></p>
+        <p>Voto: {Array.from({ length: 5 }, (_, i) => i < rating ? <FaStar key={i} color="gold" /> : <FaRegStar key={i} color="gray" />)}</p>
+        <p>{media.overview}</p>
+      </div>
+    </div>
   );
 }
 
