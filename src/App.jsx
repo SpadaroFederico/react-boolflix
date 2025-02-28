@@ -42,7 +42,7 @@ function App() {
     <div>
       <h1>BoolFlix</h1>
       <SearchBar onSearch={searchMedia} />
-      <MovieList movies={results} languageCodes={LANGUAGE_CODES} />
+      <MovieList movies={results} languageCodes={LANGUAGE_CODES} imageBaseUrl={IMAGE_BASE_URL}/>
     </div>
   );
 }
