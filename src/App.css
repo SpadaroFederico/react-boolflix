@@ -161,3 +161,23 @@ main {
   height: auto;
   vertical-align: middle;
 }
+
+.carousel-container {
+  padding-top: 40px;
+  padding-left: 20px;
+}
+
+.carousel {
+  display: flex;
+  gap: 20px;
+}
+
+.carousel .card {
+  width: 200px;
+  cursor: pointer;
+  transition: transform 0.3s ;
+}
+
+.carousel .card:hover {
+  transform: scale(1.1);
+}
