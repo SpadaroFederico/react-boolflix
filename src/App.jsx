@@ -18,17 +18,22 @@ const LANGUAGE_CODES = {
 
 function App() {
   const [results, setResults] = useState([]);
-  const [recommended, setRecommended] = useState([]);
+  const [recommendedMovies, setRecommendedMovies] = useState([]);
+  const [recommendedSeries, setRecommendedSeries] = useState([]);
 
   useEffect(() => {
     const fetchRecommended = async () => {
       try {
-        const response = await axios.get(
+        const movieResponse = await axios.get(
           `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=it-IT&page=1`
         );
-        setRecommended(response.data.results.slice(0, 10));
+        const seriesResponse = await axios.get(
+          `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=it-IT&page=1`
+        );
+        setRecommendedMovies(movieResponse.data.results.slice(0, 10));
+        setRecommendedSeries(seriesResponse.data.results.slice(0, 10));
       } catch (error) {
-        console.error("Errore nel recupero dei film consigliati", error);
+        console.error("Errore nel recupero dei film/serie consigliati", error);
       }
     };
     fetchRecommended();
@@ -55,26 +60,26 @@ function App() {
         <h1>BoolFlix</h1>
         <SearchBar onSearch={searchMedia} />
       </header>
-      {results.length === 0 && (
-        <div className="carousel-container">
+      <main>
+        <section className="carousel">
           <h2>Film Consigliati</h2>
-          <div className="carousel">
-            {recommended.map((media) => (
-              <div key={media.id} className="card">
-                <img
-                  className="card-img"
-                  src={media.poster_path ? `${IMAGE_BASE_URL}${media.poster_path}` : "https://via.placeholder.com/342x500"}
-                  alt={media.title}
-                />
-                <div className="card-info">
-                  <h3>{media.title}</h3>
-                </div>
-              </div>
-            ))}
+          <div className="carousel-container">
+            <MovieList movies={recommendedMovies} languageCodes={LANGUAGE_CODES} imageBaseUrl={IMAGE_BASE_URL} />
           </div>
-        </div>
-      )}
-      <MovieList movies={results} languageCodes={LANGUAGE_CODES} imageBaseUrl={IMAGE_BASE_URL} />
+        </section>
+        <section className="carousel">
+          <h2>Serie TV Consigliate</h2>
+          <div className="carousel-container">
+            <MovieList movies={recommendedSeries} languageCodes={LANGUAGE_CODES} imageBaseUrl={IMAGE_BASE_URL} />
+          </div>
+        </section>
+        {results.length > 0 && (
+          <section>
+            <h2>Risultati della ricerca</h2>
+            <MovieList movies={results} languageCodes={LANGUAGE_CODES} imageBaseUrl={IMAGE_BASE_URL} />
+          </section>
+        )}
+      </main>
     </div>
   );
 }
